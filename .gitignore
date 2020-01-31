@@ -1,0 +1,8 @@
+# Node modules
+node_modules
+
+# VSCODE
+.vscode
+
+# Config file
+config/defaults.js
