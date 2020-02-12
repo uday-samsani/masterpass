@@ -4,7 +4,9 @@
 	"description": "Masterpass is a password manager which encrypts everything",
 	"main": "index.js",
 	"scripts": {
-		"server": "nodemon index.js",
+		"server": "node index.js",
+		"client": "cd client && npm start",
+		"start": "concurrently \"npm run server\" \"npm run client\"",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
