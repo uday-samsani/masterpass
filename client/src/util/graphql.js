@@ -21,7 +21,7 @@ export const FETCH_CARDS = gql`
 			cardHolderName
 			cardNumber
 			cardType
-			cardExpiry
+			expiry
 			cvv
 			notes
 		}
@@ -30,7 +30,7 @@ export const FETCH_CARDS = gql`
 
 export const FETCH_GENERALS = gql`
 	{
-		getPasswords {
+		getGenerals {
 			_id
 			label
 			notes

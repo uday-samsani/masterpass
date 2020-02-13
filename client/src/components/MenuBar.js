@@ -17,7 +17,12 @@ function MenuBar() {
 		<Menu pointing secondary size='massive' color='teal'>
 			<Menu.Item name={'Locker'} active as={Link} to='/locker' />
 			<Menu.Menu position='right'>
-				<Menu.Item name='logout' onClick={logout} />
+				<Menu.Item
+					name='logout'
+					onClick={logout}
+					as={Link}
+					to='/home'
+				/>
 			</Menu.Menu>
 		</Menu>
 	) : (

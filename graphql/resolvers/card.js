@@ -10,7 +10,7 @@ const resolvers = {
 		getCards: async (_, __, context) => {
 			const user = authenticate(context);
 			try {
-				const cards = await Card.find({ user: user._id });
+				const cards = await Card.find({ user: user.id });
 				return cards;
 			} catch (error) {
 				throw new Error(error);
