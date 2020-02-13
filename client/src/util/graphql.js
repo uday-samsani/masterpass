@@ -12,3 +12,28 @@ export const FETCH_PASSWORDS = gql`
 		}
 	}
 `;
+
+export const FETCH_CARDS = gql`
+	{
+		getCards {
+			_id
+			label
+			cardHolderName
+			cardNumber
+			cardType
+			cardExpiry
+			cvv
+			notes
+		}
+	}
+`;
+
+export const FETCH_GENERALS = gql`
+	{
+		getPasswords {
+			_id
+			label
+			notes
+		}
+	}
+`;
