@@ -2,6 +2,7 @@ const { AuthenticationError } = require('apollo-server');
 const { UserInputError } = require('apollo-server');
 
 const Password = require('../../models/Password');
+const User = require('../../models/User');
 const authenticate = require('../../utils/authenticate');
 const { validatePasswordInput } = require('../../utils/validators');
 
@@ -10,7 +11,8 @@ const resolvers = {
 		getPasswords: async (_, __, context) => {
 			const user = authenticate(context);
 			try {
-				const passwords = await Password.find({ user: user._id });
+				const passwords = await Password.find({ user: user.id });
+				console.log(passwords);
 				return passwords;
 			} catch (error) {
 				throw new Error(error);

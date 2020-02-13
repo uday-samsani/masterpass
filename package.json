@@ -6,7 +6,7 @@
 	"scripts": {
 		"server": "node index.js",
 		"client": "cd client && npm start",
-		"start": "concurrently \"npm run server\" \"npm run client\"",
+		"start": "concurrently \"nodemon server\" \"npm run client\"",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
@@ -23,6 +23,8 @@
 		"apollo-server": "^2.9.16",
 		"bcryptjs": "^2.4.3",
 		"graphql": "^14.6.0",
+		"grommet": "^2.10.0",
+		"grommet-icons": "^4.4.0",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.8.10"
 	},

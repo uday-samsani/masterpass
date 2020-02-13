@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import CryptoJS from 'crypto-js';
 import { Button, Form } from 'semantic-ui-react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';

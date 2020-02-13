@@ -6,7 +6,9 @@ export const FETCH_PASSWORDS = gql`
 			_id
 			label
 			username
+			password
 			website
+			notes
 		}
 	}
 `;

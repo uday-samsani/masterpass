@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Grid, Transition } from 'semantic-ui-react';
+import { Grid, List, Segment, Loader } from 'semantic-ui-react';
 
 import { AuthContext } from '../context/auth';
 import { FETCH_PASSWORDS } from '../util/graphql';
@@ -19,19 +19,30 @@ function Locker() {
 			</Grid.Row>
 			<Grid.Row>
 				{loading ? (
-					<h1>Loading passwords..</h1>
+					<Segment>
+						<Loader inverted />
+					</Segment>
 				) : (
-					<Transition.Group>
+					<List divided relaxed>
 						{passwords &&
-							passwords.map(password => (
-								<Grid.Column
-									key={password.id}
-									style={{ marginBottom: 20 }}
-								>
-									<p>{password.label}</p>
-								</Grid.Column>
+							passwords.map((pwd, index) => (
+								<List.Item key={index}>
+									<List.Icon
+										name='key'
+										size='large'
+										verticalAlign='middle'
+									/>
+									<List.Content>
+										<List.Header as='a'>
+											{pwd.label}
+										</List.Header>
+										<List.Description as='a'>
+											{pwd.password}
+										</List.Description>
+									</List.Content>
+								</List.Item>
 							))}
-					</Transition.Group>
+					</List>
 				)}
 			</Grid.Row>
 		</Grid>
