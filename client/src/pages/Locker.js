@@ -2,30 +2,30 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import {
-	Grid,
-	List,
-	Segment,
-	Loader,
-	Container,
 	Button,
+	Container,
+	Grid,
 	Icon,
+	List,
+	Loader,
 	Modal,
-	Form
+	Segment
 } from 'semantic-ui-react';
-import CryptoJS from 'crypto-js';
 
 import PasswordForm from '../components/PasswordForm';
 import CardForm from '../components/CardForm';
-import GeneralForm from '../components/GeneralForm';
+import TextForm from '../components/TextForm';
+import CredentialItem from '../components/CredentialItem';
+
 import { AuthContext } from '../context/auth';
-import { FETCH_PASSWORDS, FETCH_CARDS, FETCH_GENERALS } from '../util/graphql';
+import { FETCH_PASSWORDS, FETCH_CARDS, FETCH_TEXTS } from '../util/graphql';
 
 const AddCredentials = () => {
 	const [addBtnVisibility, setAddBtnVisibility] = useState(false);
 
 	const [passwordModal, setPasswordModal] = useState(false);
 	const [cardModal, setCardModal] = useState(false);
-	const [generalModal, setGeneralModal] = useState(false);
+	const [textModal, setTextModal] = useState(false);
 
 	const handleAddBtn = e => {
 		setAddBtnVisibility(!addBtnVisibility);
@@ -45,11 +45,11 @@ const AddCredentials = () => {
 		setCardModal(false);
 	};
 
-	const handleGeneralModalOpen = e => {
-		setGeneralModal(true);
+	const handleTextModalOpen = e => {
+		setTextModal(true);
 	};
-	const handleOnCloseGeneralModal = e => {
-		setGeneralModal(false);
+	const handleOnCloseTextModal = e => {
+		setTextModal(false);
 	};
 
 	return (
@@ -79,10 +79,10 @@ const AddCredentials = () => {
 						<Button
 							basic
 							color={'violet'}
-							onClick={handleGeneralModalOpen}
+							onClick={handleTextModalOpen}
 						>
 							<Icon name='text cursor' />
-							General
+							Text
 						</Button>
 					</Button.Group>
 				) : null}
@@ -117,13 +117,13 @@ const AddCredentials = () => {
 				</Modal.Content>
 			</Modal>
 			<Modal
-				open={generalModal}
-				onClose={handleOnCloseGeneralModal}
+				open={textModal}
+				onClose={handleOnCloseTextModal}
 				size='small'
 				closeIcon
 			>
 				<Modal.Content>
-					<GeneralForm />
+					<TextForm />
 				</Modal.Content>
 			</Modal>
 		</>
@@ -131,8 +131,7 @@ const AddCredentials = () => {
 };
 
 const Locker = () => {
-	const { user } = useContext(AuthContext);
-	const key = sessionStorage.getItem('key');
+	useContext(AuthContext);
 	const [credentials, setCredentials] = useState([]);
 	const {
 		loading1,
@@ -144,8 +143,8 @@ const Locker = () => {
 	} = useQuery(FETCH_CARDS);
 	const {
 		loading3,
-		data: { getGenerals: generals }
-	} = useQuery(FETCH_GENERALS);
+		data: { getTexts: texts }
+	} = useQuery(FETCH_TEXTS);
 
 	useEffect(() => {
 		let temp = credentials;
@@ -159,89 +158,37 @@ const Locker = () => {
 				temp.push(card);
 			});
 		}
-		if (generals !== undefined) {
-			generals.map(general => {
-				temp.push(general);
+		if (texts !== undefined) {
+			texts.map(text => {
+				temp.push(text);
 			});
 		}
 		setCredentials(Array.from(new Set(temp)));
-	}, [cards, passwords, generals]);
+	}, [cards, passwords, texts]);
 	return (
-		<Grid columns={3}>
+		<Grid>
 			<Grid.Row className='page-title'>
 				<h1>Locker</h1>
 			</Grid.Row>
 			<AddCredentials />
 			<Grid.Row style={{ padding: '0.1em' }}>
-				{loading1 && loading2 && loading3 ? (
+				{loading1 || loading2 || loading3 ? (
 					<Segment>
 						<Loader inverted />
 					</Segment>
 				) : (
-					<List divided relaxed>
-						{credentials.sort().map(c => {
-							return (
-								<List.Item
-									key={c._id}
-									as={Container}
-									style={{ padding: '1em' }}
-								>
-									<List.Icon
-										name={
-											c.username !== null &&
-											c.username !== undefined
-												? 'key'
-												: c.cardNumber !== null &&
-												  c.cardNumber !== undefined
-												? 'credit card'
-												: 'text cursor'
-										}
-										size='large'
-										verticalAlign='middle'
-										style={{ padding: '0.5em' }}
+					<Container style={{ padding: '0 2em' }}>
+						<List divided relaxed size={'big'}>
+							{credentials.sort().map((credential, index) => {
+								return (
+									<CredentialItem
+										credential={credential}
+										key={index}
 									/>
-									<List.Content
-										style={{
-											padding: '0.5em'
-										}}
-									>
-										<List.Header
-											as='h3'
-											style={{ padding: '0.25em 0.5em' }}
-										>
-											{CryptoJS.AES.decrypt(
-												c.label,
-												key
-											).toString(CryptoJS.enc.Utf8)}
-										</List.Header>
-										<List.Description
-											as='h4'
-											style={{
-												margin: '0',
-												padding: '0.25em 0.5em'
-											}}
-										>
-											{c.username !== null &&
-											c.username !== undefined
-												? 'username: ' +
-												  CryptoJS.AES.decrypt(
-														c.username,
-														key
-												  ).toString(CryptoJS.enc.Utf8)
-												: c.cardNumber !== null &&
-												  c.cardNumber !== undefined
-												? 'card no: ' +
-												  CryptoJS.AES.decrypt(
-														c.cardNumber,
-														key
-												  ).toString(CryptoJS.enc.Utf8)
-												: 'general'}
-										</List.Description>
-									</List.Content>
-								</List.Item>
-							);
-						})}
-					</List>
+								);
+							})}
+						</List>
+					</Container>
 				)}
 			</Grid.Row>
 		</Grid>

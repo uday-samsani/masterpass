@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Locker from './pages/Locker';
+import Credential from './pages/Credential';
 
 function App() {
 	return (
@@ -22,6 +23,7 @@ function App() {
 					<MenuBar />
 					<Route exact path='/' component={Home} />
 					<Route exact path='/locker' component={Locker} />
+					<Route exact path='/credential' component={Credential} />
 					<AuthRoute exact path='/login' component={Login} />
 					<AuthRoute exact path='/register' component={Register} />
 				</Container>

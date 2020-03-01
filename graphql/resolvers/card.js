@@ -15,6 +15,15 @@ const resolvers = {
 			} catch (error) {
 				throw new Error(error);
 			}
+		},
+		getCard: async (_, { cardId }, context) => {
+			authenticate(context);
+			try {
+				const card = await Card.findById(cardId);
+				return card;
+			} catch (error) {
+				throw new Error(error);
+			}
 		}
 	},
 	Mutation: {

@@ -12,8 +12,16 @@ const resolvers = {
 			const user = authenticate(context);
 			try {
 				const passwords = await Password.find({ user: user.id });
-				console.log(passwords);
 				return passwords;
+			} catch (error) {
+				throw new Error(error);
+			}
+		},
+		getPassword: async (_, { passwordId }, context) => {
+			const user = authenticate(context);
+			try {
+				const password = await Password.findById(passwordId);
+				return password;
 			} catch (error) {
 				throw new Error(error);
 			}

@@ -28,9 +28,9 @@ export const FETCH_CARDS = gql`
 	}
 `;
 
-export const FETCH_GENERALS = gql`
+export const FETCH_TEXTS = gql`
 	{
-		getGenerals {
+		getTexts {
 			_id
 			label
 			notes
