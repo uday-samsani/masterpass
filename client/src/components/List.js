@@ -1,9 +1,17 @@
 import React from 'react';
 import CryptoJS from 'crypto-js';
-import { Dropdown, List } from 'semantic-ui-react';
+import {
+	Container,
+	Dropdown,
+	Grid,
+	Header,
+	Icon,
+	List,
+	Divider
+} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-import DeleteCredential from './DeleteCredential';
+import { DeletePassword, DeleteCard, DeleteText } from './Delete';
 
 const key = sessionStorage.getItem('key');
 
@@ -17,150 +25,167 @@ const capitalize = str => {
 
 const PasswordsList = ({ passwords }) => {
 	return (
-		<List>
-			{passwords &&
+		<>
+			{passwords ? (
 				passwords.map((password, index) => (
-					<List.Item key={index}>
-						<List.Content floated={'right'}>
-							<Dropdown
-								icon='ellipsis vertical'
-								direction='left'
-								pointing={'top right'}
-								closeOnChange
-							>
-								<Dropdown.Menu>
-									<Dropdown.Item
-										icon='edit outline'
-										text='Edit'
-									/>
-									<DeleteCredential
-										credId={password._id}
-										credType={password.__typename}
-									/>
-								</Dropdown.Menu>
-							</Dropdown>
-						</List.Content>
-						<List.Content
-							as={Link}
-							to={`/passwords/${password._id}`}
-						>
-							<List.Header>
-								<List.Icon name='key' verticalAlign='middle' />
-								{capitalize(
-									CryptoJS.AES.decrypt(
-										password.label,
-										key
-									).toString(CryptoJS.enc.Utf8)
-								)}
-							</List.Header>
-							<List.Description>
-								{'Username: ' +
-									CryptoJS.AES.decrypt(
-										password.notes,
-										key
-									).toString(CryptoJS.enc.Utf8)}
-							</List.Description>
-						</List.Content>
-					</List.Item>
-				))}
-		</List>
+					<Container key={index}>
+						{index !== 1 ? null : <Divider />}
+						<Grid columns={16}>
+							<Grid.Row>
+								<Grid.Column>
+									<Icon name='key' />
+								</Grid.Column>
+								<Grid.Column width={12}>
+									<Header
+										as={Link}
+										to={`/passwords/${password._id}`}
+									>
+										{capitalize(
+											CryptoJS.AES.decrypt(
+												password.label,
+												key
+											).toString(CryptoJS.enc.Utf8)
+										)}
+									</Header>
+									<p style={{ color: '#4f4f4f' }}>
+										{'Username: ' +
+											CryptoJS.AES.decrypt(
+												password.notes,
+												key
+											).toString(CryptoJS.enc.Utf8)}
+									</p>
+								</Grid.Column>
+								<Grid.Column width={2}>
+									<Dropdown
+										icon='ellipsis vertical'
+										direction='left'
+										pointing={'top right'}
+										closeOnChange
+									>
+										<Dropdown.Menu>
+											<Dropdown.Item
+												icon='edit outline'
+												text='Edit'
+											/>
+											<DeletePassword
+												passwordId={password._id}
+											/>
+										</Dropdown.Menu>
+									</Dropdown>
+								</Grid.Column>
+							</Grid.Row>
+						</Grid>
+					</Container>
+				))
+			) : (
+				<h1>None</h1>
+			)}
+		</>
 	);
 };
 
 const CardsList = ({ cards }) => {
 	return (
-		<List>
-			{cards &&
+		<>
+			{cards ? (
 				cards.map((card, index) => (
-					<List.Item key={index}>
-						<List.Content floated={'right'}>
-							<Dropdown
-								icon='ellipsis vertical'
-								direction='left'
-								pointing={'top right'}
-								closeOnChange
-							>
-								<Dropdown.Menu>
-									<Dropdown.Item
-										icon='edit outline'
-										text='Edit'
-									/>
-									<DeleteCredential
-										credId={card._id}
-										credType={card.__typename}
-									/>
-								</Dropdown.Menu>
-							</Dropdown>
-						</List.Content>
-						<List.Content as={Link} to={`/cards/${card._id}`}>
-							<List.Header>
-								<List.Icon
-									name='credit card'
-									verticalAlign='middle'
-								/>
-								{capitalize(
-									CryptoJS.AES.decrypt(
-										card.label,
-										key
-									).toString(CryptoJS.enc.Utf8)
-								)}
-							</List.Header>
-							<List.Description>
-								{'Card number: ' +
-									CryptoJS.AES.decrypt(
-										card.cardNumber,
-										key
-									).toString(CryptoJS.enc.Utf8)}
-							</List.Description>
-						</List.Content>
-					</List.Item>
-				))}
-		</List>
+					<Container key={index}>
+						{index !== 1 ? null : <Divider />}
+						<Grid columns={16}>
+							<Grid.Row>
+								<Grid.Column>
+									<Icon name='credit card' />
+								</Grid.Column>
+								<Grid.Column width={12}>
+									<Header as={Link} to={`/cards/${card._id}`}>
+										{capitalize(
+											CryptoJS.AES.decrypt(
+												card.label,
+												key
+											).toString(CryptoJS.enc.Utf8)
+										)}
+									</Header>
+									<p style={{ color: '#4f4f4f' }}>
+										{'Card number : ' +
+											CryptoJS.AES.decrypt(
+												card.cardNumber,
+												key
+											).toString(CryptoJS.enc.Utf8)}
+									</p>
+								</Grid.Column>
+								<Grid.Column width={2}>
+									<Dropdown
+										icon='ellipsis vertical'
+										direction='left'
+										pointing={'top right'}
+										closeOnChange
+									>
+										<Dropdown.Menu>
+											<Dropdown.Item
+												icon='edit outline'
+												text='Edit'
+											/>
+											<DeleteCard cardId={card._id} />
+										</Dropdown.Menu>
+									</Dropdown>
+								</Grid.Column>
+							</Grid.Row>
+						</Grid>
+					</Container>
+				))
+			) : (
+				<h1>None</h1>
+			)}
+		</>
 	);
 };
 
-const TextsList = ({ texts, key }) => {
+const TextsList = ({ texts }) => {
 	return (
 		<List>
-			{texts &&
+			{texts ? (
 				texts.map((text, index) => (
-					<List.Item key={index}>
-						<List.Content floated={'right'}>
-							<Dropdown
-								icon='ellipsis vertical'
-								direction='left'
-								pointing={'top right'}
-								closeOnChange
-							>
-								<Dropdown.Menu>
-									<Dropdown.Item
-										icon='edit outline'
-										text='Edit'
-									/>
-									<DeleteCredential
-										credId={text._id}
-										credType={text.__typename}
-									/>
-								</Dropdown.Menu>
-							</Dropdown>
-						</List.Content>
-						<List.Content as={Link} to={`/texts/${text._id}`}>
-							<List.Header>
-								<List.Icon
-									name='text cursor'
-									verticalAlign='middle'
-								/>
-								{capitalize(
-									CryptoJS.AES.decrypt(
-										text.label,
-										key
-									).toString(CryptoJS.enc.Utf8)
-								)}
-							</List.Header>
-							<List.Description>{'Text'}</List.Description>
-						</List.Content>
-					</List.Item>
-				))}
+					<Container key={index}>
+						{index !== 1 ? null : <Divider />}
+						<Grid columns={16}>
+							<Grid.Row>
+								<Grid.Column>
+									<Icon name='text cursor' />
+								</Grid.Column>
+								<Grid.Column width={12}>
+									<Header as={Link} to={`/texts/${text._id}`}>
+										{capitalize(
+											CryptoJS.AES.decrypt(
+												text.label,
+												key
+											).toString(CryptoJS.enc.Utf8)
+										)}
+									</Header>
+									<p style={{ color: '#4f4f4f' }}>Text</p>
+								</Grid.Column>
+								<Grid.Column width={2}>
+									<Dropdown
+										icon='ellipsis vertical'
+										direction='left'
+										pointing={'top right'}
+										closeOnChange
+									>
+										<Dropdown.Menu>
+											<Dropdown.Item
+												icon='edit outline'
+												text='Edit'
+											/>
+											<DeleteText textId={text._id} />
+										</Dropdown.Menu>
+									</Dropdown>
+								</Grid.Column>
+							</Grid.Row>
+						</Grid>
+					</Container>
+				))
+			) : (
+				<h1>None</h1>
+			)}
 		</List>
 	);
 };

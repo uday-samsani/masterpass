@@ -147,19 +147,19 @@ export const ADD_TEXT_MUTATION = gql`
 `;
 
 export const REMOVE_PASSWORD_MUTATION = gql`
-	mutation removePassword($credId: String!) {
-		credential: removePassword(passwordId: $credId)
+	mutation removePassword($passwordId: String!) {
+		credential: removePassword(passwordId: $passwordId)
 	}
 `;
 
 export const REMOVE_CARD_MUTATION = gql`
-	mutation removeCard($credId: String!) {
-		credential: removeCard(cardId: $credId)
+	mutation removeCard($cardId: String!) {
+		credential: removeCard(cardId: $cardId)
 	}
 `;
 
 export const REMOVE_TEXT_MUTATION = gql`
-	mutation removeText($credId: String!) {
-		credential: removeText(textId: $credId)
+	mutation removeText($textId: String!) {
+		credential: removeText(textId: $textId)
 	}
 `;

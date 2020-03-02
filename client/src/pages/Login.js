@@ -24,7 +24,7 @@ function Login(props) {
 				keySize: 256 / 32
 			});
 			sessionStorage.setItem('key', key256Bits);
-			props.history.push('/locker');
+			props.history.push('/mastervault');
 		},
 		onError(err) {
 			setErrors(err.graphQLErrors[0].extensions.exception.errors);

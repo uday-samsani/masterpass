@@ -118,12 +118,16 @@ const resolvers = {
 		},
 		removeCard: async (_, { cardId }, context) => {
 			const user = authenticate(context);
-			const card = await Card.findById(cardId);
-			if (user.id === card.user.toString()) {
-				await card.delete();
-				return 'Card deleted successfully';
+			const card = await Card.findOne({ _id: cardId });
+			if (card) {
+				if (user.id === card.user.toString()) {
+					await card.delete();
+					return 'Card deleted successfully';
+				} else {
+					throw new AuthenticationError('No authorization');
+				}
 			} else {
-				throw new AuthenticationError('No authorization');
+				throw new Error({ message: 'Card not found' });
 			}
 		}
 	}

@@ -3,17 +3,17 @@ import { useQuery } from '@apollo/react-hooks';
 import CryptoJS from 'crypto-js';
 import { Container, Grid, Header, Loader, Segment } from 'semantic-ui-react';
 
-import { FETCH_PASSWORD_QUERY } from '../util/graphql';
+import { FETCH_TEXT_QUERY } from '../util/graphql';
 
-function Password(props) {
+function Text(props) {
 	const key = sessionStorage.getItem('key');
-	const passwordId = props.match.params.passwordId;
+	const textId = props.match.params.textId;
 	const {
 		loading,
-		data: { getPassword: password }
-	} = useQuery(FETCH_PASSWORD_QUERY, {
+		data: { getText: text }
+	} = useQuery(FETCH_TEXT_QUERY, {
 		variables: {
-			passwordId
+			textId
 		}
 	});
 
@@ -28,7 +28,7 @@ function Password(props) {
 			) : (
 				<Container>
 					<Header as='h1' textAlign='center'>
-						Password
+						Text
 					</Header>
 					<Grid padded style={{ padding: '0 7em' }}>
 						<Grid.Row>
@@ -36,38 +36,7 @@ function Password(props) {
 								<Header as='h3'>{'Label'}</Header>
 								<Segment>
 									{CryptoJS.AES.decrypt(
-										password.label,
-										key
-									).toString(CryptoJS.enc.Utf8)}
-								</Segment>
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column width={5}>
-								<Header as='h3'>{'Username'}</Header>
-								<Segment>
-									{CryptoJS.AES.decrypt(
-										password.username,
-										key
-									).toString(CryptoJS.enc.Utf8)}
-								</Segment>
-							</Grid.Column>
-							<Grid.Column width={5}>
-								<Header as='h3'>{'Password'}</Header>
-								<Segment>
-									{CryptoJS.AES.decrypt(
-										password.password,
-										key
-									).toString(CryptoJS.enc.Utf8)}
-								</Segment>
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column width={5}>
-								<Header as='h3'>{'Website'}</Header>
-								<Segment>
-									{CryptoJS.AES.decrypt(
-										password.website,
+										text.label,
 										key
 									).toString(CryptoJS.enc.Utf8)}
 								</Segment>
@@ -78,7 +47,7 @@ function Password(props) {
 								<Header as='h3'>{'Notes'}</Header>
 								<Segment>
 									{CryptoJS.AES.decrypt(
-										password.label,
+										text.notes,
 										key
 									).toString(CryptoJS.enc.Utf8)}
 								</Segment>
@@ -91,4 +60,4 @@ function Password(props) {
 	);
 }
 
-export default Password;
+export default Text;

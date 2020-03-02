@@ -69,12 +69,16 @@ const resolvers = {
 		},
 		removeText: async (_, { textId }, context) => {
 			const user = authenticate(context);
-			const text = await Text.findById(textId);
-			if (user.id === text.user.toString()) {
-				await text.delete();
-				return 'Text deleted successfully';
+			const text = await Text.findOne({ _id: textId });
+			if (text) {
+				if (user.id === text.user.toString()) {
+					await text.delete();
+					return 'Text deleted successfully';
+				} else {
+					throw new AuthenticationError('No authorization');
+				}
 			} else {
-				throw new AuthenticationError('No authorization');
+				throw new Error({ messgae: 'Text not found' });
 			}
 		}
 	}

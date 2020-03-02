@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import {
 	Button,
@@ -15,6 +15,7 @@ import PasswordForm from '../components/PasswordForm';
 import CardForm from '../components/CardForm';
 import TextForm from '../components/TextForm';
 import { PasswordsList, CardsList, TextsList } from '../components/List.js';
+import { AuthContext } from '../context/auth';
 
 import {
 	FETCH_PASSWORDS_QUERY,
@@ -133,6 +134,7 @@ const AddCredentials = () => {
 };
 
 const MasterVault = () => {
+	const user = useContext(AuthContext);
 	const {
 		passwordLoading,
 		data: { getPasswords: passwords }
@@ -155,58 +157,64 @@ const MasterVault = () => {
 			<Grid.Row>
 				<Grid as={Grid.Column} columns='equal' stackable padded>
 					<Grid.Row>
-						<Grid.Column
-							style={{
-								backgroundColor: '#e8e8e8',
-								margin: '1em',
-								padding: '1.5em'
-							}}
-						>
-							<Header as='h3' textAlign='center'>
-								Passwords
-							</Header>
-							<Container fluid>
-								{passwordLoading ? (
-									<Loader inverted />
-								) : (
-									<PasswordsList passwords={passwords} />
-								)}
+						<Grid.Column>
+							<Container
+								style={{
+									backgroundColor: '#efefef',
+									margin: '1em',
+									padding: '1.5em'
+								}}
+							>
+								<Header as='h3' textAlign='center'>
+									Passwords
+								</Header>
+								<Container fluid>
+									{passwordLoading ? (
+										<Loader inverted />
+									) : (
+										<PasswordsList passwords={passwords} />
+									)}
+								</Container>
 							</Container>
 						</Grid.Column>
-						<Grid.Column
-							style={{
-								backgroundColor: '#e8e8e8',
-								margin: '1em',
-								padding: '1.5em'
-							}}
-						>
-							<Header as='h3' textAlign='center'>
-								Cards
-							</Header>
-							<Container>
-								{cardLoading ? (
-									<Loader inverted />
-								) : (
-									<CardsList cards={cards} />
-								)}
+						<Grid.Column>
+							<Container
+								style={{
+									backgroundColor: '#efefef',
+									margin: '1em',
+									padding: '1.5em'
+								}}
+							>
+								<Header as='h3' textAlign='center'>
+									Cards
+								</Header>
+								<Container>
+									{cardLoading ? (
+										<Loader inverted />
+									) : (
+										<CardsList cards={cards} />
+									)}
+								</Container>
 							</Container>
 						</Grid.Column>
-						<Grid.Column
-							style={{
-								backgroundColor: '#e8e8e8',
-								margin: '1em',
-								padding: '1.5em'
-							}}
-						>
-							<Header as='h3' textAlign='center'>
-								Text
-							</Header>
-							<Container>
-								{textLoading ? (
-									<Loader inverted />
-								) : (
-									<TextsList texts={texts} />
-								)}
+						<Grid.Column>
+							<Container
+								style={{
+									backgroundColor: '#efefef',
+									margin: '1em',
+									padding: '1.5em'
+								}}
+							>
+								<Header as='h3' textAlign='center'>
+									Text
+								</Header>
+								<Container>
+									{textLoading ? (
+										<Loader inverted />
+									) : (
+										<TextsList texts={texts} />
+									)}
+								</Container>
 							</Container>
 						</Grid.Column>
 					</Grid.Row>
