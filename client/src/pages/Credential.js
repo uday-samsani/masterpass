@@ -1,11 +1,16 @@
 import React from 'react';
-import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { Container, Grid, Header } from 'semantic-ui-react';
 
 import PasswordCredential from '../components/PasswordCredential';
 import CardCredential from '../components/CardCredential';
 import TextCredential from '../components/TextCredential';
+
+import {
+	FETCH_CARD_QUERY,
+	FETCH_PASSWORD_QUERY,
+	FETCH_TEXT_QUERY
+} from '../util/graphql';
 
 function Credential(props) {
 	const credId = props.location.state.credId;
@@ -51,42 +56,5 @@ function Credential(props) {
 	}
 	return postMarkup;
 }
-
-const FETCH_PASSWORD_QUERY = gql`
-	query getPassword($credId: String!) {
-		credential: getPassword(passwordId: $credId) {
-			_id
-			label
-			username
-			password
-			notes
-		}
-	}
-`;
-
-const FETCH_CARD_QUERY = gql`
-	query getCard($credId: String!) {
-		credential: getCard(cardId: $credId) {
-			_id
-			label
-			cardHolderName
-			cardNumber
-			cardType
-			expiry
-			cvv
-			notes
-		}
-	}
-`;
-
-const FETCH_TEXT_QUERY = gql`
-	query getText($credId: String!) {
-		credential: getText(textId: $credId) {
-			_id
-			label
-			notes
-		}
-	}
-`;
 
 export default Credential;

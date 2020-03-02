@@ -1,24 +1,26 @@
 /* eslint-disable */
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import {
 	Button,
 	Container,
 	Grid,
+	Header,
 	Icon,
-	List,
 	Loader,
-	Modal,
-	Segment
+	Modal
 } from 'semantic-ui-react';
 
 import PasswordForm from '../components/PasswordForm';
 import CardForm from '../components/CardForm';
 import TextForm from '../components/TextForm';
-import CredentialItem from '../components/CredentialItem';
+import { PasswordsList, CardsList, TextsList } from '../components/List.js';
 
-import { AuthContext } from '../context/auth';
-import { FETCH_PASSWORDS, FETCH_CARDS, FETCH_TEXTS } from '../util/graphql';
+import {
+	FETCH_PASSWORDS_QUERY,
+	FETCH_CARDS_QUERY,
+	FETCH_TEXTS_QUERY
+} from '../util/graphql';
 
 const AddCredentials = () => {
 	const [addBtnVisibility, setAddBtnVisibility] = useState(false);
@@ -130,69 +132,88 @@ const AddCredentials = () => {
 	);
 };
 
-const Locker = () => {
-	useContext(AuthContext);
-	const [credentials, setCredentials] = useState([]);
+const MasterVault = () => {
 	const {
-		loading1,
+		passwordLoading,
 		data: { getPasswords: passwords }
-	} = useQuery(FETCH_PASSWORDS);
+	} = useQuery(FETCH_PASSWORDS_QUERY);
 	const {
-		loading2,
+		cardLoading,
 		data: { getCards: cards }
-	} = useQuery(FETCH_CARDS);
+	} = useQuery(FETCH_CARDS_QUERY);
 	const {
-		loading3,
+		textLoading,
 		data: { getTexts: texts }
-	} = useQuery(FETCH_TEXTS);
+	} = useQuery(FETCH_TEXTS_QUERY);
 
-	useEffect(() => {
-		let temp = credentials;
-		if (passwords !== undefined) {
-			passwords.map(pwd => {
-				temp.push(pwd);
-			});
-		}
-		if (cards !== undefined) {
-			cards.map(card => {
-				temp.push(card);
-			});
-		}
-		if (texts !== undefined) {
-			texts.map(text => {
-				temp.push(text);
-			});
-		}
-		setCredentials(Array.from(new Set(temp)));
-	}, [cards, passwords, texts]);
 	return (
 		<Grid>
 			<Grid.Row className='page-title'>
-				<h1>Locker</h1>
+				<Header as='h1'>Master Vault</Header>
 			</Grid.Row>
 			<AddCredentials />
-			<Grid.Row style={{ padding: '0.1em' }}>
-				{loading1 || loading2 || loading3 ? (
-					<Segment>
-						<Loader inverted />
-					</Segment>
-				) : (
-					<Container style={{ padding: '0 2em' }}>
-						<List divided relaxed size={'big'}>
-							{credentials.sort().map((credential, index) => {
-								return (
-									<CredentialItem
-										credential={credential}
-										key={index}
-									/>
-								);
-							})}
-						</List>
-					</Container>
-				)}
+			<Grid.Row>
+				<Grid as={Grid.Column} columns='equal' stackable padded>
+					<Grid.Row>
+						<Grid.Column
+							style={{
+								backgroundColor: '#e8e8e8',
+								margin: '1em',
+								padding: '1.5em'
+							}}
+						>
+							<Header as='h3' textAlign='center'>
+								Passwords
+							</Header>
+							<Container fluid>
+								{passwordLoading ? (
+									<Loader inverted />
+								) : (
+									<PasswordsList passwords={passwords} />
+								)}
+							</Container>
+						</Grid.Column>
+						<Grid.Column
+							style={{
+								backgroundColor: '#e8e8e8',
+								margin: '1em',
+								padding: '1.5em'
+							}}
+						>
+							<Header as='h3' textAlign='center'>
+								Cards
+							</Header>
+							<Container>
+								{cardLoading ? (
+									<Loader inverted />
+								) : (
+									<CardsList cards={cards} />
+								)}
+							</Container>
+						</Grid.Column>
+						<Grid.Column
+							style={{
+								backgroundColor: '#e8e8e8',
+								margin: '1em',
+								padding: '1.5em'
+							}}
+						>
+							<Header as='h3' textAlign='center'>
+								Text
+							</Header>
+							<Container>
+								{textLoading ? (
+									<Loader inverted />
+								) : (
+									<TextsList texts={texts} />
+								)}
+							</Container>
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
 			</Grid.Row>
 		</Grid>
 	);
 };
 
-export default Locker;
+export default MasterVault;

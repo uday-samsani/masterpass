@@ -1,11 +1,10 @@
 import React from 'react';
-import { Button, Form, Icon, Input } from 'semantic-ui-react';
-import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import CryptoJS from 'crypto-js';
+import { Button, Form, Icon, Input } from 'semantic-ui-react';
 
 import { useForm } from '../util/hooks';
-import { FETCH_PASSWORDS } from '../util/graphql';
+import { FETCH_PASSWORDS_QUERY, ADD_PASSWORD_MUTATION } from '../util/graphql';
 
 function PasswordForm() {
 	const key = sessionStorage.getItem('key');
@@ -17,7 +16,7 @@ function PasswordForm() {
 		notes: ''
 	});
 
-	const [addPassword, { error }] = useMutation(ADD_PASSWORD, {
+	const [addPassword, { error }] = useMutation(ADD_PASSWORD_MUTATION, {
 		variables: {
 			label: CryptoJS.AES.encrypt(values.label, key).toString(),
 			username: CryptoJS.AES.encrypt(values.username, key).toString(),
@@ -27,10 +26,10 @@ function PasswordForm() {
 		},
 		update(proxy, result) {
 			const data = proxy.readQuery({
-				query: FETCH_PASSWORDS
+				query: FETCH_PASSWORDS_QUERY
 			});
 			data.getPasswords = [result.data.addPassword, ...data.getPasswords];
-			proxy.writeQuery({ query: FETCH_PASSWORDS, data });
+			proxy.writeQuery({ query: FETCH_PASSWORDS_QUERY, data });
 			values.label = '';
 			values.username = '';
 			values.password = '';
@@ -112,32 +111,5 @@ function PasswordForm() {
 		</>
 	);
 }
-
-const ADD_PASSWORD = gql`
-	mutation addPassword(
-		$label: String!
-		$username: String
-		$password: String!
-		$website: String
-		$notes: String
-	) {
-		addPassword(
-			passwordInput: {
-				label: $label
-				username: $username
-				password: $password
-				website: $website
-				notes: $notes
-			}
-		) {
-			_id
-			label
-			username
-			password
-			website
-			notes
-		}
-	}
-`;
 
 export default PasswordForm;

@@ -12,8 +12,10 @@ import MenuBar from './components/MenuBar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Locker from './pages/Locker';
-import Credential from './pages/Credential';
+import MasterVault from './pages/MasterVault';
+import Password from './pages/Password';
+import Card from './pages/Card';
+import Text from './pages/Text';
 
 function App() {
 	return (
@@ -22,8 +24,14 @@ function App() {
 				<Container>
 					<MenuBar />
 					<Route exact path='/' component={Home} />
-					<Route exact path='/locker' component={Locker} />
-					<Route exact path='/credential' component={Credential} />
+					<Route exact path='/mastervault' component={MasterVault} />
+					<Route
+						exact
+						path='/passwords/:passwordId'
+						component={Password}
+					/>
+					<Route exact path='/cards/:cardId' component={Card} />
+					<Route exact path='/texts/:textId' component={Text} />
 					<AuthRoute exact path='/login' component={Login} />
 					<AuthRoute exact path='/register' component={Register} />
 				</Container>

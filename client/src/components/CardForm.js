@@ -1,11 +1,10 @@
 import React from 'react';
-import { Button, Form, Icon } from 'semantic-ui-react';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
 import CryptoJS from 'crypto-js';
+import { useMutation } from '@apollo/react-hooks';
+import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { useForm } from '../util/hooks';
-import { FETCH_CARDS } from '../util/graphql';
+import { FETCH_CARDS_QUERY, ADD_CARD_MUTATION } from '../util/graphql';
 
 function CardForm() {
 	const key = sessionStorage.getItem('key');
@@ -19,7 +18,7 @@ function CardForm() {
 		notes: ''
 	});
 
-	const [addCard, { error }] = useMutation(ADD_CARD, {
+	const [addCard, { error }] = useMutation(ADD_CARD_MUTATION, {
 		variables: {
 			label: CryptoJS.AES.encrypt(values.label, key).toString(),
 			cardHolderName: CryptoJS.AES.encrypt(
@@ -34,10 +33,10 @@ function CardForm() {
 		},
 		update(proxy, result) {
 			const data = proxy.readQuery({
-				query: FETCH_CARDS
+				query: FETCH_CARDS_QUERY
 			});
 			data.getCards = [result.data.addCard, ...data.getCards];
-			proxy.writeQuery({ query: FETCH_CARDS, data });
+			proxy.writeQuery({ query: FETCH_CARDS_QUERY, data });
 			values.label = '';
 			values.cardHolderName = '';
 			values.cardNumber = '';
@@ -140,38 +139,5 @@ function CardForm() {
 		</>
 	);
 }
-
-const ADD_CARD = gql`
-	mutation addCard(
-		$label: String!
-		$cardHolderName: String!
-		$cardNumber: String!
-		$cardType: String!
-		$expiry: String!
-		$cvv: String!
-		$notes: String
-	) {
-		addCard(
-			cardInput: {
-				label: $label
-				cardHolderName: $cardHolderName
-				cardNumber: $cardNumber
-				cardType: $cardType
-				expiry: $expiry
-				cvv: $cvv
-				notes: $notes
-			}
-		) {
-			_id
-			label
-			cardHolderName
-			cardNumber
-			cardType
-			expiry
-			cvv
-			notes
-		}
-	}
-`;
 
 export default CardForm;

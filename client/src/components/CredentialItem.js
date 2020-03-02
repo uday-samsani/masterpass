@@ -3,6 +3,8 @@ import { Dropdown, List } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 
+import DeleteCredential from './DeleteCredential';
+
 const CredentialItem = ({ credential }) => {
 	const key = sessionStorage.getItem('key');
 	const capitalize = str => {
@@ -13,25 +15,30 @@ const CredentialItem = ({ credential }) => {
 		}
 	};
 
-	const credType =
-		credential.username !== null && credential.username !== undefined
+	const credType = credential
+		? credential.username !== null && credential.username !== undefined
 			? 'password'
 			: credential.cardNumber !== null &&
 			  credential.cardNumber !== undefined
 			? 'card'
-			: 'text';
+			: 'text'
+		: null;
 
-	return (
+	return credential ? (
 		<List.Item>
 			<List.Content floated={'right'}>
 				<Dropdown
 					icon='ellipsis vertical'
 					direction='left'
 					pointing={'top right'}
+					closeOnChange
 				>
 					<Dropdown.Menu>
 						<Dropdown.Item icon='edit outline' text='Edit' />
-						<Dropdown.Item icon='trash' text='Delete' />
+						<DeleteCredential
+							credId={credential._id}
+							credType={credType}
+						/>
 					</Dropdown.Menu>
 				</Dropdown>
 			</List.Content>
@@ -86,7 +93,7 @@ const CredentialItem = ({ credential }) => {
 				</List.Description>
 			</List.Content>
 		</List.Item>
-	);
+	) : null;
 };
 
 export default CredentialItem;

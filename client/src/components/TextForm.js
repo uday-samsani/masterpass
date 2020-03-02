@@ -1,11 +1,10 @@
 import React from 'react';
-import { Button, Form, Icon } from 'semantic-ui-react';
-import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import CryptoJS from 'crypto-js';
+import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { useForm } from '../util/hooks';
-import { FETCH_TEXTS } from '../util/graphql';
+import { FETCH_TEXTS_QUERY, ADD_TEXT_MUTATION } from '../util/graphql';
 
 function TextForm() {
 	const key = sessionStorage.getItem('key');
@@ -15,17 +14,17 @@ function TextForm() {
 		notes: ''
 	});
 
-	const [addText, { error }] = useMutation(ADD_TEXT, {
+	const [addText, { error }] = useMutation(ADD_TEXT_MUTATION, {
 		variables: {
 			label: CryptoJS.AES.encrypt(values.label, key).toString(),
 			notes: CryptoJS.AES.encrypt(values.notes, key).toString()
 		},
 		update(proxy, result) {
 			const data = proxy.readQuery({
-				query: FETCH_TEXTS
+				query: FETCH_TEXTS_QUERY
 			});
 			data.getTexts = [result.data.addText, ...data.getTexts];
-			proxy.writeQuery({ query: FETCH_TEXTS, data });
+			proxy.writeQuery({ query: FETCH_TEXTS_QUERY, data });
 			values.label = '';
 			values.notes = '';
 		}
@@ -76,15 +75,5 @@ function TextForm() {
 		</>
 	);
 }
-
-const ADD_TEXT = gql`
-	mutation addText($label: String!, $notes: String) {
-		addText(textInput: { label: $label, notes: $notes }) {
-			_id
-			label
-			notes
-		}
-	}
-`;
 
 export default TextForm;
