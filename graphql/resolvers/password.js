@@ -95,13 +95,16 @@ const resolvers = {
 		},
 		removePassword: async (_, { passwordId }, context) => {
 			const user = authenticate(context);
-
-			const password = await Password.findById(passwordId);
-			if (user.id === password.user.toString()) {
-				await password.delete();
-				return 'Password deleted successfully';
+			const password = await Password.findOne({ _id: passwordId });
+			if (password) {
+				if (user.id === password.user.toString()) {
+					await password.delete();
+					return 'Password deleted successfully';
+				} else {
+					throw new AuthenticationError('No authorization');
+				}
 			} else {
-				throw new AuthenticationError('No authorization');
+				throw new Error({ message: 'Password not found' });
 			}
 		}
 	}
