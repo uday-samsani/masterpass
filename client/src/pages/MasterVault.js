@@ -10,12 +10,10 @@ import {
 	Loader,
 	Modal
 } from 'semantic-ui-react';
-
-import PasswordForm from '../components/PasswordForm';
-import CardForm from '../components/CardForm';
-import TextForm from '../components/TextForm';
-import { PasswordsList, CardsList, TextsList } from '../components/List.js';
 import { AuthContext } from '../context/auth';
+
+import { PasswordForm, CardForm, TextForm } from '../components/Form';
+import { PasswordsList, CardsList, TextsList } from '../components/List.js';
 
 import {
 	FETCH_PASSWORDS_QUERY,

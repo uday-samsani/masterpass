@@ -16,7 +16,7 @@ const DeletePassword = ({ passwordId, callback }) => {
 	const [confirmOpen, setConfirmOpen] = useState(false);
 	console.log(passwordId);
 
-	const [deletePostOrMutation] = useMutation(REMOVE_PASSWORD_MUTATION, {
+	const [deletePassword] = useMutation(REMOVE_PASSWORD_MUTATION, {
 		update(proxy) {
 			setConfirmOpen(false);
 			const data = proxy.readQuery({
@@ -44,7 +44,7 @@ const DeletePassword = ({ passwordId, callback }) => {
 			<Confirm
 				open={confirmOpen}
 				onCancel={() => setConfirmOpen(false)}
-				onConfirm={deletePostOrMutation}
+				onConfirm={deletePassword}
 			/>
 		</>
 	);
@@ -53,7 +53,7 @@ const DeletePassword = ({ passwordId, callback }) => {
 const DeleteCard = ({ cardId, callback }) => {
 	const [confirmOpen, setConfirmOpen] = useState(false);
 
-	const [deletePostOrMutation] = useMutation(REMOVE_CARD_MUTATION, {
+	const [deleteCard] = useMutation(REMOVE_CARD_MUTATION, {
 		update(proxy) {
 			setConfirmOpen(false);
 			const data = proxy.readQuery({
@@ -79,7 +79,7 @@ const DeleteCard = ({ cardId, callback }) => {
 			<Confirm
 				open={confirmOpen}
 				onCancel={() => setConfirmOpen(false)}
-				onConfirm={deletePostOrMutation}
+				onConfirm={deleteCard}
 			/>
 		</>
 	);
@@ -88,7 +88,7 @@ const DeleteCard = ({ cardId, callback }) => {
 const DeleteText = ({ textId, callback }) => {
 	const [confirmOpen, setConfirmOpen] = useState(false);
 
-	const [deletePostOrMutation] = useMutation(REMOVE_TEXT_MUTATION, {
+	const [deleteText] = useMutation(REMOVE_TEXT_MUTATION, {
 		update(proxy) {
 			setConfirmOpen(false);
 			const data = proxy.readQuery({
@@ -114,7 +114,7 @@ const DeleteText = ({ textId, callback }) => {
 			<Confirm
 				open={confirmOpen}
 				onCancel={() => setConfirmOpen(false)}
-				onConfirm={deletePostOrMutation}
+				onConfirm={deleteText}
 			/>
 		</>
 	);
