@@ -1,12 +1,9 @@
 const { model, Schema } = require('mongoose');
 
-const GeneralSchema = new Schema({
+const TextSchema = new Schema({
 	label: {
 		type: String,
 		required: true
-	},
-	text: {
-		type: String
 	},
 	notes: {
 		type: String
@@ -18,4 +15,4 @@ const GeneralSchema = new Schema({
 	}
 });
 
-module.exports = model('General', GeneralSchema);
+module.exports = model('Text', TextSchema);

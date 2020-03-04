@@ -1,19 +1,19 @@
 const userResolvers = require('./user');
 const passwordResolvers = require('./password');
 const cardResolvers = require('./card');
-const generalResolvers = require('./general');
+const textResolvers = require('./text');
 
 module.exports = {
 	Query: {
 		...userResolvers.Query,
 		...passwordResolvers.Query,
 		...cardResolvers.Query,
-		...generalResolvers.Query
+		...textResolvers.Query
 	},
 	Mutation: {
 		...userResolvers.Mutation,
 		...passwordResolvers.Mutation,
 		...cardResolvers.Mutation,
-		...generalResolvers.Mutation
+		...textResolvers.Mutation
 	}
 };

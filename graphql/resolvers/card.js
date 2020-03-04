@@ -10,8 +10,17 @@ const resolvers = {
 		getCards: async (_, __, context) => {
 			const user = authenticate(context);
 			try {
-				const cards = await Card.find({ user: user._id });
+				const cards = await Card.find({ user: user.id });
 				return cards;
+			} catch (error) {
+				throw new Error(error);
+			}
+		},
+		getCard: async (_, { cardId }, context) => {
+			authenticate(context);
+			try {
+				const card = await Card.findById(cardId);
+				return card;
 			} catch (error) {
 				throw new Error(error);
 			}
@@ -109,12 +118,16 @@ const resolvers = {
 		},
 		removeCard: async (_, { cardId }, context) => {
 			const user = authenticate(context);
-			const card = await Card.findById(cardId);
-			if (user.id === card.user.toString()) {
-				await card.delete();
-				return 'Card deleted successfully';
+			const card = await Card.findOne({ _id: cardId });
+			if (card) {
+				if (user.id === card.user.toString()) {
+					await card.delete();
+					return 'Card deleted successfully';
+				} else {
+					throw new AuthenticationError('No authorization');
+				}
 			} else {
-				throw new AuthenticationError('No authorization');
+				throw new Error({ message: 'Card not found' });
 			}
 		}
 	}

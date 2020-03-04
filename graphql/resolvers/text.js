@@ -1,40 +1,44 @@
 const { AuthenticationError } = require('apollo-server');
 const { UserInputError } = require('apollo-server');
 
-const General = require('../../models/General');
+const Text = require('../../models/Text');
 const authenticate = require('../../utils/authenticate');
 const { validateGeneralInput } = require('../../utils/validators');
 
 const resolvers = {
 	Query: {
-		getGenerals: async (_, __, context) => {
+		getTexts: async (_, __, context) => {
 			const user = authenticate(context);
 			try {
-				const generals = await General.find({ user: user.id });
-				return generals;
+				const texts = await Text.find({ user: user.id });
+				return texts;
+			} catch (error) {
+				throw new Error(error);
+			}
+		},
+		getText: async (_, { textId }, context) => {
+			authenticate(context);
+			try {
+				const text = await Text.findById(textId);
+				return text;
 			} catch (error) {
 				throw new Error(error);
 			}
 		}
 	},
 	Mutation: {
-		addGeneral: async (
-			_,
-			{ generalInput: { label, text, notes } },
-			context
-		) => {
+		addText: async (_, { textInput: { label, notes } }, context) => {
 			try {
 				const { valid, errors } = validateGeneralInput(label);
 				if (valid) {
 					const user = authenticate(context);
-					let general = new General({
+					let text = new Text({
 						label,
-						text,
 						notes,
 						user: user.id
 					});
-					general = await general.save();
-					return general;
+					text = await text.save();
+					return text;
 				} else {
 					throw new UserInputError('Error', { errors });
 				}
@@ -42,21 +46,20 @@ const resolvers = {
 				throw new Error(error);
 			}
 		},
-		updateGeneral: async (
+		updateText: async (
 			_,
-			{ generalId, generalInput: { label, text, notes } },
+			{ textId, textInput: { label, notes } },
 			context
 		) => {
 			try {
 				const { valid, errors } = validateGeneralInput(label);
 				if (valid) {
 					authenticate(context);
-					let general = await General.findByIdAndUpdate(generalId, {
+					let text = await Text.findByIdAndUpdate(textId, {
 						label,
-						text,
 						notes
 					});
-					return general;
+					return text;
 				} else {
 					throw new UserInputError('Error', { errors });
 				}
@@ -64,14 +67,18 @@ const resolvers = {
 				throw new Error(error);
 			}
 		},
-		removeGeneral: async (_, { generalId }, context) => {
+		removeText: async (_, { textId }, context) => {
 			const user = authenticate(context);
-			const general = await General.findById(generalId);
-			if (user.id === general.user.toString()) {
-				await general.delete();
-				return 'Card deleted successfully';
+			const text = await Text.findOne({ _id: textId });
+			if (text) {
+				if (user.id === text.user.toString()) {
+					await text.delete();
+					return 'Text deleted successfully';
+				} else {
+					throw new AuthenticationError('No authorization');
+				}
 			} else {
-				throw new AuthenticationError('No authorization');
+				throw new Error({ messgae: 'Text not found' });
 			}
 		}
 	}

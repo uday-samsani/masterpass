@@ -24,10 +24,9 @@ const typeDefs = gql`
 		expiry: String
 		notes: String
 	}
-	type Genral {
+	type Text {
 		_id: ID
 		label: String
-		text: String
 		notes: String
 	}
 	input RegisterInput {
@@ -51,16 +50,18 @@ const typeDefs = gql`
 		expiry: String!
 		notes: String
 	}
-	input GeneralInput {
+	input TextInput {
 		label: String!
-		text: String
 		notes: String
 	}
 	type Query {
 		sayHi: String!
 		getPasswords: [Password]
+		getPassword(passwordId: String!): Password
 		getCards: [Card]
-		getGenerals: [Genral]
+		getCard(cardId: String!): Card
+		getTexts: [Text]
+		getText(textId: String!): Text
 	}
 	type Mutation {
 		login(username: String!, password: String!): User!
@@ -77,9 +78,9 @@ const typeDefs = gql`
 		updateCard(cardID: String!, cardInput: CardInput): Card!
 		removeCard(cardId: String!): String!
 
-		addGeneral(generalInput: GeneralInput): Genral!
-		updateGeneral(generalId: String!, generalInput: GeneralInput): Genral!
-		removeGeneral(generalId: String!): String!
+		addText(textInput: TextInput): Text!
+		updateText(textId: String!, textInput: TextInput): Text!
+		removeText(textId: String!): String!
 	}
 `;
 
