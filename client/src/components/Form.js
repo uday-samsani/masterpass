@@ -1,5 +1,4 @@
 import React from 'react';
-import CryptoJS from 'crypto-js';
 import {
 	Button,
 	Dropdown,
@@ -21,11 +20,11 @@ import {
 	ADD_CARD_MUTATION,
 	ADD_TEXT_MUTATION
 } from '../util/graphql';
-import MyPopup from '../util/MyPopup';
 import { useMutation } from '@apollo/react-hooks';
 
+import { encrypt } from '../util/crypt';
+
 const PasswordForm = () => {
-	const key = sessionStorage.getItem('key');
 	const [addPassword] = useMutation(ADD_PASSWORD_MUTATION);
 
 	return (
@@ -38,31 +37,13 @@ const PasswordForm = () => {
 				}}
 				onSubmit={(values, actions) => {
 					actions.setSubmitting(true);
-					console.log(
-						CryptoJS.AES.encrypt(values.label, key).toString()
-					);
 					addPassword({
 						variables: {
-							label: CryptoJS.AES.encrypt(
-								values.label,
-								key
-							).toString(),
-							username: CryptoJS.AES.encrypt(
-								values.username,
-								key
-							).toString(),
-							password: CryptoJS.AES.encrypt(
-								values.password,
-								key
-							).toString(),
-							website: CryptoJS.AES.encrypt(
-								values.website,
-								key
-							).toString(),
-							notes: CryptoJS.AES.encrypt(
-								values.notes,
-								key
-							).toString()
+							label: encrypt(values.label),
+							username: encrypt(values.username),
+							password: encrypt(values.password),
+							website: encrypt(values.website),
+							notes: encrypt(values.notes)
 						},
 						update(proxy, result) {
 							const data = proxy.readQuery({
@@ -161,7 +142,6 @@ const PasswordForm = () => {
 };
 
 const CardForm = () => {
-	const key = sessionStorage.getItem('key');
 	const options = [
 		{ key: '0', value: 'masterCard', text: 'Master Card' },
 		{ key: '0', value: 'meastro', text: 'Meastro' },
@@ -169,6 +149,7 @@ const CardForm = () => {
 		{ key: '2', value: 'rupay', text: 'Rupay' }
 	];
 	const [addCard] = useMutation(ADD_CARD_MUTATION);
+
 	return (
 		<div>
 			<Header as={'h1'}>Add card</Header>
@@ -176,38 +157,16 @@ const CardForm = () => {
 				enableReinitialize={true}
 				initialValues={{}}
 				onSubmit={(values, actions) => {
-					console.log(values);
 					actions.setSubmitting(true);
 					addCard({
 						variables: {
-							label: CryptoJS.AES.encrypt(
-								values.label,
-								key
-							).toString(),
-							cardHolderName: CryptoJS.AES.encrypt(
-								values.cardHolderName,
-								key
-							).toString(),
-							cardNumber: CryptoJS.AES.encrypt(
-								values.cardNumber,
-								key
-							).toString(),
-							cardType: CryptoJS.AES.encrypt(
-								values.cardType,
-								key
-							).toString(),
-							expiry: CryptoJS.AES.encrypt(
-								values.expiry,
-								key
-							).toString(),
-							cvv: CryptoJS.AES.encrypt(
-								values.cvv,
-								key
-							).toString(),
-							notes: CryptoJS.AES.encrypt(
-								values.notes,
-								key
-							).toString()
+							label: encrypt(values.label),
+							cardHolderName: encrypt(values.cardHolderName),
+							cardNumber: encrypt(values.cardNumber),
+							cardType: encrypt(values.cardType),
+							expiry: encrypt(values.expiry),
+							cvv: encrypt(values.cvv),
+							notes: encrypt(values.notes)
 						},
 						update(proxy, result) {
 							const data = proxy.readQuery({
@@ -247,7 +206,7 @@ const CardForm = () => {
 								<Field
 									as={Input}
 									type='text'
-									name='CardHolderName'
+									name='cardHolderName'
 									placeholder='Jon Doe'
 									label={'Card holder name'}
 									labelPosition={'left'}
@@ -259,7 +218,7 @@ const CardForm = () => {
 								<Field
 									as={Input}
 									type='text'
-									name='CardNumber'
+									name='cardNumber'
 									placeholder='xxxx xxxx xxxx xxxx'
 									label={'Card number'}
 									labelPosition={'left'}
@@ -282,18 +241,16 @@ const CardForm = () => {
 								/>
 							</Grid.Column>
 							<Grid.Column>
-								<Grid.Column>
-									<Field
-										as={Input}
-										type='password'
-										name='cvv'
-										placeholder='***'
-										label={'CVV'}
-										labelPosition={'left'}
-										size={'large'}
-										fluid
-									/>
-								</Grid.Column>
+								<Field
+									as={Input}
+									type='password'
+									name='cvv'
+									placeholder='***'
+									label={'CVV'}
+									labelPosition={'left'}
+									size={'large'}
+									fluid
+								/>
 							</Grid.Column>
 						</Grid.Row>
 						<Grid.Row>
@@ -337,7 +294,6 @@ const CardForm = () => {
 };
 
 const TextForm = () => {
-	const key = sessionStorage.getItem('key');
 	const [addText] = useMutation(ADD_TEXT_MUTATION);
 	return (
 		<div>
@@ -349,14 +305,8 @@ const TextForm = () => {
 					actions.setSubmitting(true);
 					addText({
 						variables: {
-							label: CryptoJS.AES.encrypt(
-								values.label,
-								key
-							).toString(),
-							notes: CryptoJS.AES.encrypt(
-								values.notes,
-								key
-							).toString()
+							label: encrypt(values.label),
+							notes: encrypt(values.notes)
 						},
 						update(proxy, result) {
 							const data = proxy.readQuery({

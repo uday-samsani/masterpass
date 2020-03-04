@@ -1,5 +1,5 @@
 import React from 'react';
-import CryptoJS from 'crypto-js';
+import { decrypt } from '../util/crypt';
 import {
 	Container,
 	Dropdown,
@@ -12,8 +12,6 @@ import {
 import { Link } from 'react-router-dom';
 
 import { DeletePassword, DeleteCard, DeleteText } from './Delete';
-
-const key = sessionStorage.getItem('key');
 
 const capitalize = str => {
 	if (typeof str === 'string') {
@@ -29,7 +27,7 @@ const PasswordsList = ({ passwords }) => {
 			{passwords ? (
 				passwords.map((password, index) => (
 					<Container key={index}>
-						{index !== 1 ? null : <Divider />}
+						{index !== 0 ? null : <Divider />}
 						<Grid columns={16}>
 							<Grid.Row>
 								<Grid.Column>
@@ -40,19 +38,10 @@ const PasswordsList = ({ passwords }) => {
 										as={Link}
 										to={`/passwords/${password._id}`}
 									>
-										{capitalize(
-											CryptoJS.AES.decrypt(
-												password.label,
-												key
-											).toString(CryptoJS.enc.Utf8)
-										)}
+										{capitalize(decrypt(password.label))}
 									</Header>
 									<p style={{ color: '#4f4f4f' }}>
-										{'Username: ' +
-											CryptoJS.AES.decrypt(
-												password.notes,
-												key
-											).toString(CryptoJS.enc.Utf8)}
+										{'Username: ' + decrypt(password.notes)}
 									</p>
 								</Grid.Column>
 								<Grid.Column width={2}>
@@ -90,7 +79,7 @@ const CardsList = ({ cards }) => {
 			{cards ? (
 				cards.map((card, index) => (
 					<Container key={index}>
-						{index !== 1 ? null : <Divider />}
+						{index !== 0 ? null : <Divider />}
 						<Grid columns={16}>
 							<Grid.Row>
 								<Grid.Column>
@@ -98,19 +87,11 @@ const CardsList = ({ cards }) => {
 								</Grid.Column>
 								<Grid.Column width={12}>
 									<Header as={Link} to={`/cards/${card._id}`}>
-										{capitalize(
-											CryptoJS.AES.decrypt(
-												card.label,
-												key
-											).toString(CryptoJS.enc.Utf8)
-										)}
+										{capitalize(decrypt(card.label))}
 									</Header>
 									<p style={{ color: '#4f4f4f' }}>
 										{'Card number : ' +
-											CryptoJS.AES.decrypt(
-												card.cardNumber,
-												key
-											).toString(CryptoJS.enc.Utf8)}
+											decrypt(card.cardNumber)}
 									</p>
 								</Grid.Column>
 								<Grid.Column width={2}>
@@ -146,7 +127,7 @@ const TextsList = ({ texts }) => {
 			{texts ? (
 				texts.map((text, index) => (
 					<Container key={index}>
-						{index !== 1 ? null : <Divider />}
+						{index !== 0 ? null : <Divider />}
 						<Grid columns={16}>
 							<Grid.Row>
 								<Grid.Column>
@@ -154,12 +135,7 @@ const TextsList = ({ texts }) => {
 								</Grid.Column>
 								<Grid.Column width={12}>
 									<Header as={Link} to={`/texts/${text._id}`}>
-										{capitalize(
-											CryptoJS.AES.decrypt(
-												text.label,
-												key
-											).toString(CryptoJS.enc.Utf8)
-										)}
+										{capitalize(decrypt(text.labe))}
 									</Header>
 									<p style={{ color: '#4f4f4f' }}>Text</p>
 								</Grid.Column>

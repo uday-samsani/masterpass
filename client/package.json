@@ -8,6 +8,7 @@
     "apollo-client": "^2.6.2",
     "apollo-link-context": "^1.0.18",
     "apollo-link-http": "^1.5.14",
+    "clipboard": "^2.0.5",
     "crypto-js": "^3.2.0",
     "formik": "^2.1.4",
     "generate-password": "^1.5.1",

@@ -146,6 +146,83 @@ export const ADD_TEXT_MUTATION = gql`
 	}
 `;
 
+export const UPDATE_PASSWORD_MUTATION = gql`
+	mutation updatePassword(
+		$passwordId: String!
+		$label: String!
+		$username: String!
+		$password: String!
+		$website: String
+		$notes: String
+	) {
+		updatePassword(
+			passwordId: $passwordId
+			passwordInput: {
+				label: $label
+				username: $username
+				password: $password
+				website: $website
+				notes: $notes
+			}
+		) {
+			_id
+			label
+			username
+			password
+			website
+			notes
+		}
+	}
+`;
+
+export const UPDATE_CARD_MUTATION = gql`
+	mutation updateCard(
+		$cardId: String!
+		$label: String!
+		$cardHolderName: String!
+		$cardNumber: String!
+		$cardType: String!
+		$expiry: String!
+		$cvv: String!
+		$notes: String
+	) {
+		updateCard(
+			cardId: $cardId
+			cardInput: {
+				label: $label
+				cardHolderName: $cardHolderName
+				cardNumber: $cardNumber
+				cardType: $cardType
+				expiry: $expiry
+				cvv: $cvv
+				notes: $notes
+			}
+		) {
+			_id
+			label
+			cardHolderName
+			cardNumber
+			cardType
+			expiry
+			cvv
+			notes
+		}
+	}
+`;
+
+export const UPDATE_TEXT_MUTATION = gql`
+	mutation updateText($textId: String!, $label: String!, $notes: String) {
+		updateText(
+			textId: $textId
+			textInput: { label: $label, notes: $notes }
+		) {
+			_id
+			label
+			notes
+		}
+	}
+`;
+
 export const REMOVE_PASSWORD_MUTATION = gql`
 	mutation removePassword($passwordId: String!) {
 		credential: removePassword(passwordId: $passwordId)
