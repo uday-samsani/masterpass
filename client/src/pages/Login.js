@@ -19,6 +19,7 @@ function Login(props) {
 	const [loginUser, { loading }] = useMutation(LOGIN_USER, {
 		update(_, { data: { login: userData } }) {
 			context.login(userData);
+			console.log(userData);
 			const salt = userData._id.toString();
 			const key256Bits = CryptoJS.PBKDF2(values.password, salt, {
 				keySize: 256 / 32
@@ -27,6 +28,7 @@ function Login(props) {
 			props.history.push('/mastervault');
 		},
 		onError(err) {
+			console.log(err);
 			setErrors(err.graphQLErrors[0].extensions.exception.errors);
 		},
 		variables: values

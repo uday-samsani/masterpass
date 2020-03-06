@@ -14,7 +14,6 @@ import MyPopup from '../util/MyPopup';
 
 const DeletePassword = ({ passwordId, callback }) => {
 	const [confirmOpen, setConfirmOpen] = useState(false);
-	console.log(passwordId);
 
 	const [deletePassword] = useMutation(REMOVE_PASSWORD_MUTATION, {
 		update(proxy) {

@@ -135,7 +135,7 @@ const TextsList = ({ texts }) => {
 								</Grid.Column>
 								<Grid.Column width={12}>
 									<Header as={Link} to={`/texts/${text._id}`}>
-										{capitalize(decrypt(text.labe))}
+										{capitalize(decrypt(text.label))}
 									</Header>
 									<p style={{ color: '#4f4f4f' }}>Text</p>
 								</Grid.Column>
