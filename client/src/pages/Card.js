@@ -31,9 +31,6 @@ const Card = props => {
 		{ key: '1', value: 'visa', text: 'Visa' },
 		{ key: '2', value: 'rupay', text: 'Rupay' }
 	];
-	const hadndleOnClickShow = (e, data) => {
-		setShowCvv(!showCvv);
-	};
 	const {
 		loading,
 		data: { getCard: card }

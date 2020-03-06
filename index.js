@@ -10,10 +10,12 @@ const server = new ApolloServer({
 	context: ({ req }) => ({ req })
 });
 
+const PORT = process.env.PORT || 5000;
+
 const startServer = async () => {
 	try {
 		await connectDB();
-		await server.listen({ port: 5000 });
+		await server.listen({ port: PORT });
 		console.log('🚀  Server ready at localhost:5000/');
 	} catch (error) {
 		console.log(error.msg);
