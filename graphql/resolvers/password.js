@@ -96,8 +96,6 @@ const resolvers = {
 		removePassword: async (_, { passwordId }, context) => {
 			const user = authenticate(context);
 			const password = await Password.findOne({ _id: passwordId });
-			console.log('pssword');
-			console.log(password);
 			if (password) {
 				if (user.id === password.user._id.toString()) {
 					await password.delete();

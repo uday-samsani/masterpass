@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { mongoUri } = require('./defaults');
 const connectDB = async () => {
 	try {
-		await mongoose.connect(mongoUri, {
+		await mongoose.connect(process.env.MongoUri || mongoUri, {
 			useNewUrlParser: true,
 			useCreateIndex: true,
 			useFindAndModify: false,
