@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import CryptoJS from 'crypto-js';
 import { Formik, Form, Field } from 'formik';
 import {
 	Button,
-	Container,
 	Grid,
-	Icon,
 	Input,
 	Header,
 	Label,
 	Loader,
-	Segment,
 	TextArea,
 	Form as SemanticForm
 } from 'semantic-ui-react';
@@ -41,9 +37,6 @@ const Password = props => {
 	const passwordId = props.match.params.passwordId;
 	const [showPassword, setShowPassword] = useState(false);
 	const [editMode, setEditMode] = useState(false);
-	const hadndleOnClickShow = (e, data) => {
-		setShowPassword(!showPassword);
-	};
 	const {
 		loading,
 		data: { getPassword: password }
