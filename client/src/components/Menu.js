@@ -59,9 +59,7 @@ function MenuBar(props) {
 					</Menu.Menu>
 				</Menu>
 			)}
-			{props.children}
 		</>
 	);
 }
-
-export default MenuBar;
+export { MenuBar };
