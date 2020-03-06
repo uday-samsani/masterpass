@@ -1,7 +1,7 @@
-const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
 const favicon = require('express-favicon');
 const { path } = require('path');
+const { ApolloServer } = require('apollo-server-express');
 
 const connectDB = require('./config/db');
 const typeDefs = require('./graphql/typeDefs');
