@@ -41,7 +41,8 @@ const PasswordsList = ({ passwords }) => {
 										{capitalize(decrypt(password.label))}
 									</Header>
 									<p style={{ color: '#4f4f4f' }}>
-										{'Username: ' + decrypt(password.notes)}
+										{'Username: ' +
+											decrypt(password.username)}
 									</p>
 								</Grid.Column>
 								<Grid.Column width={2}>
