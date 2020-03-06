@@ -25,7 +25,6 @@ function Register(props) {
 				keySize: 256 / 32
 			});
 			sessionStorage.setItem('key', key256Bits);
-			console.log(key256Bits);
 			props.history.push('/');
 		},
 		onError(err) {

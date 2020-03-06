@@ -62,7 +62,6 @@ const Card = props => {
 						notes: decrypt(card.notes)
 					}}
 					onSubmit={(values, actions) => {
-						console.log(values);
 						actions.setSubmitting(true);
 						updateCard({
 							variables: {
