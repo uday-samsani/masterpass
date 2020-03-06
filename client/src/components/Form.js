@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
+import { AuthContext } from '../context/auth';
+
 import {
 	Button,
+	Container,
 	Dropdown,
 	Grid,
 	Icon,
@@ -18,7 +23,8 @@ import {
 	FETCH_TEXTS_QUERY,
 	ADD_PASSWORD_MUTATION,
 	ADD_CARD_MUTATION,
-	ADD_TEXT_MUTATION
+	ADD_TEXT_MUTATION,
+	LOGIN_USER
 } from '../util/graphql';
 import { useMutation } from '@apollo/react-hooks';
 
@@ -368,4 +374,98 @@ const TextForm = () => {
 	);
 };
 
-export { PasswordForm, CardForm, TextForm };
+const LoginForm = props => {
+	const context = useContext(AuthContext);
+	const [loginUser] = useMutation(LOGIN_USER);
+	return (
+		<Container>
+			<Formik
+				enableReinitialize={true}
+				initialValues={{}}
+				onSubmit={(values, actions) => {
+					actions.setSubmitting(true);
+					loginUser({
+						variables: {
+							username: values.username,
+							password: values.password
+						},
+						update(_, { data: { login: userData } }) {
+							context.login(userData);
+							const salt = userData._id.toString();
+							const key256Bits = CryptoJS.PBKDF2(
+								values.password,
+								salt,
+								{
+									keySize: 256 / 32
+								}
+							);
+							sessionStorage.setItem('key', key256Bits);
+							props.history.push('/mastervault');
+						}
+					});
+					actions.setSubmitting(false);
+				}}
+			>
+				<Form>
+					<Grid textAlign='center'>
+						<Grid.Row>
+							<Grid.Column>
+								<Field
+									as={Input}
+									type='text'
+									name='username'
+									placeholder='JonDoe'
+									size={'huge'}
+									style={{
+										width: '400px'
+									}}
+								/>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column>
+								<Field
+									as={Input}
+									type='password'
+									name='password'
+									placeholder='********'
+									size={'huge'}
+									style={{ width: '400px' }}
+								/>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column width={8}>
+								<Link to='/register'>
+									<Field
+										as={Button}
+										type='button'
+										basic
+										size='large'
+										color='purple'
+									>
+										Register
+									</Field>
+								</Link>
+								<Field
+									as={Button}
+									type='submit'
+									size='large'
+									color='blue'
+								>
+									Log In
+								</Field>
+							</Grid.Column>
+						</Grid.Row>
+					</Grid>
+				</Form>
+			</Formik>
+		</Container>
+	);
+};
+
+const RegisterForm = () => {
+	return <></>;
+};
+
+export { PasswordForm, CardForm, TextForm, LoginForm, RegisterForm };

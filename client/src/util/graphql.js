@@ -1,5 +1,15 @@
 import gql from 'graphql-tag';
 
+export const LOGIN_USER = gql`
+	mutation login($username: String!, $password: String!) {
+		login(username: $username, password: $password) {
+			_id
+			username
+			token
+		}
+	}
+`;
+
 export const FETCH_PASSWORDS_QUERY = gql`
 	{
 		getPasswords {
