@@ -23,7 +23,6 @@ import { encrypt, decrypt } from '../util/crypt';
 
 const Card = props => {
 	const cardId = props.match.params.cardId;
-	const [showCvv, setShowCvv] = useState(false);
 	const [editMode, setEditMode] = useState(false);
 	const options = [
 		{ key: '0', value: 'masterCard', text: 'Master Card' },

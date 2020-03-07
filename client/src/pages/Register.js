@@ -1,112 +1,53 @@
-import React, { useContext, useState } from 'react';
-import CryptoJS from 'crypto-js';
-import { Button, Form } from 'semantic-ui-react';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import React from 'react';
 
-import { AuthContext } from '../context/auth';
-import { useForm } from '../util/hooks';
+import { Container, Grid, Header, Image } from 'semantic-ui-react';
+import { RegisterForm } from '../components/Form';
 
-function Register(props) {
-	const context = useContext(AuthContext);
-	const [errors, setErrors] = useState({});
+import RegisterIllustration from '../images/registerillustration.png';
 
-	const { onChange, onSubmit, values } = useForm(registerUser, {
-		username: '',
-		password: '',
-		confirmPassword: ''
-	});
-
-	const [addUser, { loading }] = useMutation(REGISTER_USER, {
-		update(_, { data: { register: userData } }) {
-			context.login(userData);
-			const salt = userData._id.toString();
-			const key256Bits = CryptoJS.PBKDF2(values.password, salt, {
-				keySize: 256 / 32
-			});
-			sessionStorage.setItem('key', key256Bits);
-			props.history.push('/');
-		},
-		onError(err) {
-			setErrors(err.graphQLErrors[0].extensions.exception.errors);
-		},
-		variables: values
-	});
-
-	function registerUser() {
-		addUser();
-	}
-
+const Register = props => {
 	return (
-		<div className='form-container'>
-			<Form
-				onSubmit={onSubmit}
-				noValidate
-				className={loading ? 'loading' : ''}
-			>
-				<h1>Register</h1>
-				<Form.Input
-					label='Username'
-					placeholder='Username..'
-					name='username'
-					type='text'
-					value={values.username}
-					error={errors.username ? true : false}
-					onChange={onChange}
-				/>
-				<Form.Input
-					label='Password'
-					placeholder='Password..'
-					name='password'
-					type='password'
-					value={values.password}
-					error={errors.password ? true : false}
-					onChange={onChange}
-				/>
-				<Form.Input
-					label='Confirm Password'
-					placeholder='Confirm Password..'
-					name='confirmPassword'
-					type='password'
-					value={values.confirmPassword}
-					error={errors.confirmPassword ? true : false}
-					onChange={onChange}
-				/>
-				<Button type='submit' primary>
-					Register
-				</Button>
-			</Form>
-			{Object.keys(errors).length > 0 && (
-				<div className='ui error message'>
-					<ul className='list'>
-						{Object.values(errors).map(value => (
-							<li key={value}>{value}</li>
-						))}
-					</ul>
-				</div>
-			)}
-		</div>
+		<Grid columns={2} fluid style={{ height: '100vh', margin: '0' }}>
+			<Grid.Row style={{ margin: '0', padding: '0' }}>
+				<Grid.Column style={{ backgroundColor: '#FFE0D4' }}>
+					<Container style={{ padding: '4em' }}>
+						<Header
+							as='h1'
+							textAlign='center'
+							style={{
+								fontSize: '2.5em',
+								padding: '1em',
+								color: '#4B2728'
+							}}
+						>
+							Register
+						</Header>
+						<RegisterForm />
+					</Container>
+				</Grid.Column>
+				<Grid.Column style={{ backgroundColor: '#FFF9F7' }}>
+					<Container style={{ padding: '5em' }} textAlign='center'>
+						<Image
+							src={RegisterIllustration}
+							verticalAlign='middle'
+							rounded
+							size='big'
+						/>
+						<Header
+							as='h1'
+							style={{
+								color: '#4737EE',
+								fontSize: '3em',
+								padding: '0 1em'
+							}}
+						>
+							Glad to have you on board
+						</Header>
+					</Container>
+				</Grid.Column>
+			</Grid.Row>
+		</Grid>
 	);
-}
-
-const REGISTER_USER = gql`
-	mutation register(
-		$username: String!
-		$password: String!
-		$confirmPassword: String!
-	) {
-		register(
-			registerInput: {
-				username: $username
-				password: $password
-				confirmPassword: $confirmPassword
-			}
-		) {
-			_id
-			username
-			token
-		}
-	}
-`;
+};
 
 export default Register;
