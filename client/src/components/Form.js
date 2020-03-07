@@ -24,7 +24,8 @@ import {
 	ADD_PASSWORD_MUTATION,
 	ADD_CARD_MUTATION,
 	ADD_TEXT_MUTATION,
-	LOGIN_USER
+	LOGIN_USER,
+	REGISTER_USER
 } from '../util/graphql';
 import { useMutation } from '@apollo/react-hooks';
 
@@ -464,8 +465,96 @@ const LoginForm = props => {
 	);
 };
 
-const RegisterForm = () => {
-	return <></>;
+const RegisterForm = props => {
+	const [addUser] = useMutation(REGISTER_USER);
+	return (
+		<Container>
+			<Formik
+				enableReinitialize={true}
+				initialValues={{}}
+				onSubmit={(values, actions) => {
+					actions.setSubmitting(true);
+					addUser({
+						variables: {
+							username: values.username,
+							password: values.password,
+							confirmPassword: values.confirmPassword
+						},
+						update(_) {
+							props.history.push('/login');
+						}
+					});
+					actions.setSubmitting(false);
+				}}
+			>
+				<Form>
+					<Grid textAlign='center'>
+						<Grid.Row>
+							<Grid.Column>
+								<Field
+									as={Input}
+									type='text'
+									name='username'
+									placeholder='JonDoe'
+									size={'huge'}
+									style={{
+										width: '400px'
+									}}
+								/>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column>
+								<Field
+									as={Input}
+									type='password'
+									name='password'
+									placeholder='Password'
+									size={'huge'}
+									style={{ width: '400px' }}
+								/>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column>
+								<Field
+									as={Input}
+									type='password'
+									name='confirmPassword'
+									placeholder='Confirm Password'
+									size={'huge'}
+									style={{ width: '400px' }}
+								/>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column width={8}>
+								<Link to='/login'>
+									<Field
+										as={Button}
+										type='button'
+										basic
+										size='large'
+										color='purple'
+									>
+										Log In
+									</Field>
+								</Link>
+								<Field
+									as={Button}
+									type='submit'
+									size='large'
+									color='blue'
+								>
+									Register
+								</Field>
+							</Grid.Column>
+						</Grid.Row>
+					</Grid>
+				</Form>
+			</Formik>
+		</Container>
+	);
 };
 
 export { PasswordForm, CardForm, TextForm, LoginForm, RegisterForm };
