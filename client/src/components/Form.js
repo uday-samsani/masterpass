@@ -401,7 +401,6 @@ const LoginForm = ({ props }) => {
 								}
 							);
 							sessionStorage.setItem('key', key256Bits);
-							console.log(props);
 							props.history.push('/mastervault');
 						}
 					});
@@ -466,7 +465,7 @@ const LoginForm = ({ props }) => {
 	);
 };
 
-const RegisterForm = props => {
+const RegisterForm = ({ props }) => {
 	const context = useContext(AuthContext);
 	const [addUser] = useMutation(REGISTER_USER);
 	return (

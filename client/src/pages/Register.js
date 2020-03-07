@@ -22,7 +22,7 @@ const Register = props => {
 						>
 							Register
 						</Header>
-						<RegisterForm />
+						<RegisterForm props={props} />
 					</Container>
 				</Grid.Column>
 				<Grid.Column style={{ backgroundColor: '#FFF9F7' }}>
