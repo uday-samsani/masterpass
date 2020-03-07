@@ -21,7 +21,10 @@ const startServer = async () => {
 		server.applyMiddleware({ app, path: '/graphql' });
 		if (process.env.NODE_ENV === 'production') {
 			app.use((req, res) => {
-				res.setHeader('Content-Security-Policy', "script-src 'self'");
+				res.setHeader(
+					'Content-Security-Policy',
+					"default-src 'self' www.master-pass.herokuapp.com"
+				);
 			});
 			app.use(favicon(__dirname + '/client/build/favicon.ico'));
 			app.use(express.static('client/build'));
