@@ -1,22 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Header, Button } from 'semantic-ui-react';
+import { Container, Header, Image, Button } from 'semantic-ui-react';
+
+import Page404Image from '../images/page404.png';
 
 const Page404 = () => {
 	return (
 		<Container textAlign='center' style={{ padding: '10em' }}>
-			<Header
-				as='h1'
-				style={{
-					padding: 0,
-					margin: 0,
-					fontSize: '15em',
-					color: '#151e3f'
-				}}
-			>
-				404
-			</Header>
-			<Header as='h1' color='blue'>
+			<Image src={Page404Image} size={'big'} centered />
+			<Header as='h1' style={{ fontSize: '3em' }} color='blue'>
 				Page not found
 			</Header>
 			<Link to='/'>
