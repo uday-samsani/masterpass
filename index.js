@@ -23,7 +23,7 @@ const startServer = async () => {
 			app.use((req, res) => {
 				res.setHeader(
 					'Content-Security-Policy',
-					"script-src 'self' www.master-pass.herokuapp.com"
+					"default-src 'self' www.master-pass.herokuapp.com"
 				);
 			});
 			app.use(favicon(__dirname + '/client/build/favicon.ico'));

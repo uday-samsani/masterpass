@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Grid, Header, Image } from 'semantic-ui-react';
 import { LoginForm } from '../components/Form';
 
