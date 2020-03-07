@@ -27,7 +27,7 @@ function MenuBar(props) {
 							name='logout'
 							onClick={logout}
 							as={Link}
-							to='/home'
+							to='/'
 						/>
 					</Menu.Menu>
 				</Menu>
