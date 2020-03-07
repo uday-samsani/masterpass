@@ -19,54 +19,42 @@ import Text from './pages/Text';
 import Page404 from './pages/Page404';
 
 const NavRoute = ({ exact, path, component: Component }) => (
-	<Route
-		exact={exact}
-		path={path}
-		render={props => (
-			<div>
-				<MenuBar />
-				<Component {...props} />
-			</div>
-		)}
-	/>
+	<Container>
+		<Route
+			exact={exact}
+			path={path}
+			render={props => (
+				<div>
+					<MenuBar />
+					<Component {...props} />
+				</div>
+			)}
+		/>
+	</Container>
 );
 
 const App = () => {
 	return (
 		<AuthProvider>
 			<Router>
-				<Container>
-					<Switch>
-						<NavRoute exact path='/' component={Home} />
-						<NavRoute
-							exact
-							path='/mastervault'
-							component={MasterVault}
-						/>
-						<NavRoute
-							exact
-							path='/passwords/:passwordId'
-							component={Password}
-						/>
-						<NavRoute
-							exact
-							path='/cards/:cardId'
-							component={Card}
-						/>
-						<NavRoute
-							exact
-							path='/texts/:textId'
-							component={Text}
-						/>
-						<AuthRoute exact path='/login' component={Login} />
-						<AuthRoute
-							exact
-							path='/register'
-							component={Register}
-						/>
-						<Route component={Page404} />
-					</Switch>
-				</Container>
+				<Switch>
+					<NavRoute exact path='/' component={Home} />
+					<NavRoute
+						exact
+						path='/mastervault'
+						component={MasterVault}
+					/>
+					<NavRoute
+						exact
+						path='/passwords/:passwordId'
+						component={Password}
+					/>
+					<NavRoute exact path='/cards/:cardId' component={Card} />
+					<NavRoute exact path='/texts/:textId' component={Text} />
+					<AuthRoute exact path='/login' component={Login} />
+					<AuthRoute exact path='/register' component={Register} />
+					<Route component={Page404} />
+				</Switch>
 			</Router>
 		</AuthProvider>
 	);
