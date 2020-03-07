@@ -21,7 +21,6 @@ const startServer = async () => {
 		server.applyMiddleware({ app, path: '/graphql' });
 		if (process.env.NODE_ENV === 'production') {
 			app.use(favicon(__dirname + '/client/build/favicon.ico'));
-			app.use('/graphql');
 			app.use(express.static('client/build'));
 			app.get('*', (req, res) => {
 				res.sendFile(
