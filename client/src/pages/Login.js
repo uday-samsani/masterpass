@@ -12,6 +12,16 @@ const Login = props => {
 				<Grid.Column style={{ backgroundColor: '#F4FFF8' }}>
 					<Container style={{ padding: '5em' }} textAlign='center'>
 						<Image src={LoginIllustration} verticalAlign='middle' />
+						<Header
+							as='h1'
+							style={{
+								color: '#00AD9F',
+								fontSize: '5em',
+								padding: '1em'
+							}}
+						>
+							Welcome back!
+						</Header>
 					</Container>
 				</Grid.Column>
 				<Grid.Column style={{ backgroundColor: '#C8EEFB' }}>
@@ -22,7 +32,7 @@ const Login = props => {
 							style={{
 								fontSize: '2.5em',
 								padding: '1em',
-								color: '#4B48B5'
+								color: '#3f58d4'
 							}}
 						>
 							Log In
