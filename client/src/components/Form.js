@@ -401,6 +401,7 @@ const LoginForm = props => {
 								}
 							);
 							sessionStorage.setItem('key', key256Bits);
+							console.log(props);
 							props.history.push('/mastervault');
 						}
 					});
