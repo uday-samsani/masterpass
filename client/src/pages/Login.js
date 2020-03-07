@@ -36,7 +36,7 @@ const Login = props => {
 						>
 							Log In
 						</Header>
-						<LoginForm />
+						<LoginForm props={props} />
 					</Container>
 				</Grid.Column>
 			</Grid.Row>
