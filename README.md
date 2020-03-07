@@ -36,7 +36,7 @@
   <h3 align="center">YOUR_TITLE</h3>
 
   <p align="center">
-    YOUR_SHORT_DESCRIPTION
+    A Master key to rule them all.
     <br />
     <a href="https://github.com/uday-samsani/masterpass"><strong>Explore the docs »</strong></a>
     <br />
