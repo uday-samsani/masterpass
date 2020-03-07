@@ -13,7 +13,9 @@ export const REGISTER_USER = gql`
 				confirmPassword: $confirmPassword
 			}
 		) {
+			_id
 			username
+			token
 		}
 	}
 `;

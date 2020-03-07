@@ -466,6 +466,7 @@ const LoginForm = props => {
 };
 
 const RegisterForm = props => {
+	const context = useContext(AuthContext);
 	const [addUser] = useMutation(REGISTER_USER);
 	return (
 		<Container>
@@ -480,8 +481,18 @@ const RegisterForm = props => {
 							password: values.password,
 							confirmPassword: values.confirmPassword
 						},
-						update(_) {
-							props.history.push('/login');
+						update(_, { data: { register: userData } }) {
+							context.login(userData);
+							const salt = userData._id.toString();
+							const key256Bits = CryptoJS.PBKDF2(
+								values.password,
+								salt,
+								{
+									keySize: 256 / 32
+								}
+							);
+							sessionStorage.setItem('key', key256Bits);
+							props.history.push('/mastervault');
 						}
 					});
 					actions.setSubmitting(false);
