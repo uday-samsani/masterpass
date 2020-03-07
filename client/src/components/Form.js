@@ -375,7 +375,7 @@ const TextForm = () => {
 	);
 };
 
-const LoginForm = props => {
+const LoginForm = ({ props }) => {
 	const context = useContext(AuthContext);
 	const [loginUser] = useMutation(LOGIN_USER);
 	return (
