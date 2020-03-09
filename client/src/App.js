@@ -26,7 +26,7 @@ const NavRoute = ({ exact, path, component: Component }) => (
 			render={props => (
 				<div>
 					<MenuBar />
-					<Component {...props} />
+					<Component {...props} fluid />
 				</div>
 			)}
 		/>

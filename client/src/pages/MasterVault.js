@@ -158,7 +158,7 @@ const MasterVault = () => {
 						<Grid.Column>
 							<Container
 								style={{
-									backgroundColor: '#efefef',
+									backgroundColor: '#E1EFF6',
 									margin: '1em',
 									padding: '1.5em'
 								}}
@@ -178,7 +178,7 @@ const MasterVault = () => {
 						<Grid.Column>
 							<Container
 								style={{
-									backgroundColor: '#efefef',
+									backgroundColor: '#E1EFF6',
 									margin: '1em',
 									padding: '1.5em'
 								}}
@@ -198,7 +198,7 @@ const MasterVault = () => {
 						<Grid.Column>
 							<Container
 								style={{
-									backgroundColor: '#efefef',
+									backgroundColor: '#E1EFF6',
 									margin: '1em',
 									padding: '1.5em'
 								}}

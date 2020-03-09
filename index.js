@@ -1,5 +1,5 @@
 const express = require('express');
-const favicon = require('express-favicon');
+// const favicon = require('express-favicon');
 const { path } = require('path');
 const { ApolloServer } = require('apollo-server-express');
 
