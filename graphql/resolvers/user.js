@@ -75,10 +75,16 @@ const Resolvers = {
 					length: 32,
 					strict: true
 				});
+				var salt = CryptoJS.lib.WordArray.random(128 / 8);
 				const newUser = new User({
 					username: username,
 					password: userPassword,
-					key: CryptoJS.AES.encrypt(data, key).toString()
+					key: CryptoJS.AES.encrypt(
+						CryptoJS.PBKDF2(data, salt, {
+							keySize: 256 / 32
+						}).toString(),
+						key
+					).toString()
 				});
 				const result = await newUser.save();
 				return {
