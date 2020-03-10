@@ -18,7 +18,7 @@ const resolvers = {
 			}
 		},
 		getPassword: async (_, { passwordId }, context) => {
-			const user = authenticate(context);
+			authenticate(context);
 			try {
 				const password = await Password.findById(passwordId);
 				return password;

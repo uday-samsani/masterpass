@@ -4,11 +4,11 @@
 	"description": "Masterpass is a password manager which encrypts everything",
 	"main": "index.js",
 	"scripts": {
-		"server": "node index.js",
+		"server": "nodemon index.js",
 		"client": "cd client && npm start",
 		"start": "node index.js",
 		"heroku-postbuild": "cd client && npm install && npm run build",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"dev": "concurrently \"npm run server\" \"npm run client\""
 	},
 	"repository": {
 		"type": "git",
@@ -24,8 +24,11 @@
 		"apollo-server": "^2.11.0",
 		"apollo-server-express": "^2.11.0",
 		"bcryptjs": "^2.4.3",
+		"crypto-js": "^4.0.0",
+		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"express-favicon": "^2.0.1",
+		"generate-password": "^1.5.1",
 		"graphql": "^14.6.0",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.9.3"

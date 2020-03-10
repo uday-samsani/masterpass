@@ -1,6 +1,13 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const CryptoJS = require('crypto-js');
+const generator = require('generate-password');
 const { UserInputError } = require('apollo-server');
+
+const env = require('dotenv');
+if (process.env.NODE_ENV !== 'production') {
+	env.config();
+}
 
 const {
 	validateRegisterInput,
@@ -11,10 +18,10 @@ const User = require('../../models/User');
 const generateToken = user => {
 	return jwt.sign(
 		{
-			id: user.id,
+			id: user._id,
 			username: user.username
 		},
-		process.env.SecretKey || secretKey,
+		process.env.SecretKey,
 		{ expiresIn: '1h' }
 	);
 };
@@ -36,12 +43,11 @@ const Resolvers = {
 				errors.credentials = 'Wrong credentials';
 				throw new UserInputError('Credentials', { errors });
 			}
-			const token = generateToken(user);
-
 			return {
 				...user._doc,
-				id: user._id,
-				token
+				_id: user._id,
+				key: user.key,
+				token: generateToken(user)
 			};
 		},
 		register: async (
@@ -61,17 +67,31 @@ const Resolvers = {
 				if (user) {
 					throw new UserInputError('Username is already taken.');
 				}
-				password = await bcrypt.hash(password, 12);
+				userPassword = await bcrypt.hash(password, 12);
+				const key = CryptoJS.PBKDF2(password, username, {
+					keySize: 256 / 32
+				}).toString();
+				const data = generator.generate({
+					length: 32,
+					strict: true
+				});
+				var salt = CryptoJS.lib.WordArray.random(128 / 8);
 				const newUser = new User({
-					username,
-					password
+					username: username,
+					password: userPassword,
+					key: CryptoJS.AES.encrypt(
+						CryptoJS.PBKDF2(data, salt, {
+							keySize: 256 / 32
+						}).toString(),
+						key
+					).toString()
 				});
 				const result = await newUser.save();
-				const token = generateToken(result);
 				return {
 					...result._doc,
-					id: result._id,
-					token
+					_id: result._id,
+					key: result.key,
+					token: generateToken(result)
 				};
 			} catch (error) {
 				throw new Error(error);

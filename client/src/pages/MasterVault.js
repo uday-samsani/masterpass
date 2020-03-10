@@ -132,7 +132,6 @@ const AddCredentials = () => {
 };
 
 const MasterVault = () => {
-	const user = useContext(AuthContext);
 	const {
 		passwordLoading,
 		data: { getPasswords: passwords }
