@@ -15,6 +15,7 @@ export const REGISTER_USER = gql`
 		) {
 			_id
 			username
+			key
 			token
 		}
 	}
@@ -25,6 +26,7 @@ export const LOGIN_USER = gql`
 		login(username: $username, password: $password) {
 			_id
 			username
+			key
 			token
 		}
 	}
