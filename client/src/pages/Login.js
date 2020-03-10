@@ -6,7 +6,7 @@ import LoginIllustration from '../images/loginillustration.png';
 
 const Login = props => {
 	return (
-		<Grid columns={2} fluid style={{ height: '100vh', margin: '0' }}>
+		<Grid columns={2} style={{ height: '100vh', margin: '0' }}>
 			<Grid.Row style={{ margin: '0', padding: '0' }}>
 				<Grid.Column style={{ backgroundColor: '#F4FFF8' }}>
 					<Container style={{ padding: '5em' }} textAlign='center'>
