@@ -390,17 +390,23 @@ const LoginForm = ({ props }) => {
 							username: values.username,
 							password: values.password
 						},
-						update(_, { data: { login: userData } }) {
-							context.login(userData);
-							const salt = userData._id.toString();
-							const key256Bits = CryptoJS.PBKDF2(
+						update(_, { data: { login: user } }) {
+							context.login(user);
+							const passKey = CryptoJS.PBKDF2(
 								values.password,
-								salt,
+								user.username,
 								{
 									keySize: 256 / 32
 								}
-							);
-							sessionStorage.setItem('key', key256Bits);
+							).toString();
+							const key = CryptoJS.AES.decrypt(
+								user.key,
+								passKey
+							).toString(CryptoJS.enc.Utf8);
+							if (sessionStorage.getItem('key')) {
+								sessionStorage.removeItem('key');
+							}
+							sessionStorage.setItem('key', key);
 							props.history.push('/mastervault');
 						}
 					});
@@ -481,17 +487,20 @@ const RegisterForm = ({ props }) => {
 							password: values.password,
 							confirmPassword: values.confirmPassword
 						},
-						update(_, { data: { register: userData } }) {
-							context.login(userData);
-							const salt = userData._id.toString();
-							const key256Bits = CryptoJS.PBKDF2(
+						update(_, { data: { register: user } }) {
+							context.login(user);
+							const passKey = CryptoJS.PBKDF2(
 								values.password,
-								salt,
+								user.username,
 								{
 									keySize: 256 / 32
 								}
-							);
-							sessionStorage.setItem('key', key256Bits);
+							).toString();
+							const key = CryptoJS.AES.decrypt(
+								user.key,
+								passKey
+							).toString(CryptoJS.enc.Utf8);
+							sessionStorage.setItem('key', key);
 							props.history.push('/mastervault');
 						}
 					});
