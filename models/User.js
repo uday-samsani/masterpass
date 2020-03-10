@@ -9,24 +9,10 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	passwords: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'Password'
-		}
-	],
-	cards: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'Card'
-		}
-	],
-	general: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'General'
-		}
-	]
+	key: {
+		type: String,
+		required: true
+	}
 });
 
 module.exports = model('User', UserSchema);
